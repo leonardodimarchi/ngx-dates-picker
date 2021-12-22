@@ -2,12 +2,11 @@
   <div class="columns is-multiline">
     <div class="column is-6 is-offset-3">
       <div class="datepicker-container">
-        model value: {{ date }}
-      </div>
-    </div>
-    <div class="column is-6 is-offset-3">
-      <div class="datepicker-container">
-        <ngx-dates-picker [(ngModel)]="date" [options]="options"></ngx-dates-picker>
+        <ngx-dates-picker
+          [isOpened]="true"
+          [headless]="true"
+          [(ngModel)]="date"
+          [options]="options"></ngx-dates-picker>
       </div>
     </div>
   </div>

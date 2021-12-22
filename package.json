@@ -7,7 +7,7 @@
   "typings": "./dist/ngx-dates-picker.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/martre3/ngx-dates-picker.git"
+    "url": "git+https://github.com/leonardodimarchi/ngx-dates-picker.git"
   },
   "keywords": [
     "angular",
@@ -21,9 +21,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/martre3/ngx-dates-picker/issues"
+    "url": "https://github.com/leonardodimarchi/ngx-dates-picker/issues"
   },
-  "homepage": "https://github.com/martre3/ngx-dates-picker#readme",
+  "homepage": "https://github.com/leonardodimarchi/ngx-dates-picker#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -37,6 +37,7 @@
     "prepublishOnly": "npm run build:lib"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.6",
     "@angular/animations": "9.1.7",
     "@angular/cli": "9.1.6",
     "@angular/common": "9.1.7",
@@ -51,7 +52,6 @@
     "@types/jasmine": "~3.5.10",
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "~14.0.4",
-    "bulma": "^0.8.2",
     "codelyzer": "^5.2.2",
     "core-js": "^3.6.5",
     "jasmine-core": "~3.5.0",
@@ -68,11 +68,11 @@
     "ts-node": "~8.10.1",
     "tslint": "~5.10.0",
     "typescript": "3.8.3",
-    "zone.js": "^0.10.3",
-    "@angular-devkit/build-angular": "~0.901.6"
+    "zone.js": "^0.10.3"
   },
   "dependencies": {
     "date-fns": "^2.14.0",
+    "http-parser": "^1.0.3",
     "ngx-slimscroll": "^9.0.0"
   }
 }
