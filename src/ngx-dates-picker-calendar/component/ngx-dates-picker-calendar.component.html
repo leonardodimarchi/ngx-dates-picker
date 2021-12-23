@@ -29,7 +29,7 @@
           </g>
         </svg>
       </ng-template>
-      <span class="topbar-title" (click)="toggleView()">{{ barTitle }}</span>
+      <span class="topbar-title" (click)="toggleView()">{{ barTitle | titlecase }}</span>
       <div (click)="nextMonth()">
         <ng-template [ngTemplateOutlet]="nextMonthButtonTemplate || defaultNextMonthTemplate"></ng-template>
       </div>

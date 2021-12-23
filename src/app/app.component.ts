@@ -2,6 +2,7 @@
 
 import { Component } from '@angular/core';
 import { DatepickerOptions, DateRange } from '../ngx-dates-picker-calendar/component/ngx-dates-picker-calendar.component';
+import { ptBR } from 'date-fns/locale';
 
 //#endregion
 
@@ -22,11 +23,10 @@ export class AppComponent {
     includeDays: 'previous-month', // 'none', 'previous-month', 'next-month', 'all'. Should it render days outside current month.
     minYear: 1970,
     maxYear: 2030,
-    displayFormat: 'MMM D[,] yyyy',
     barTitleFormat: 'MMMM yyyy',
-    dayNamesFormat: 'ddd',
+    dayNamesFormat: 'EEEEE',
     firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
-    locale: {},
+    locale: ptBR,
   };
 
   public formatDisplay(): void {

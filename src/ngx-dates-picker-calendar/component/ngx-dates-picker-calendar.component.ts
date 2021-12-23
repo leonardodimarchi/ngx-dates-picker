@@ -76,13 +76,11 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
     includeNextMonthsFirstFullWeek: false,
     minYear: 1970,
     maxYear: 2030,
-    displayFormat: 'MMM dd, yyyy',
     barTitleFormat: 'MMMM yyyy',
-    dayNamesFormat: 'EEE',
+    dayNamesFormat: 'EEEEE',
     showNavigationIfMonthIsClicked: false,
     selectRange: false,
     firstCalendarDay: 0,
-    locale: {},
   };
 
   public barTitle: string;
@@ -223,7 +221,11 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
     new Array(nextDays).fill(undefined)
       .forEach((_, i) => this.days.push(this.formatDay(addDays(end, i + 1), showNextMonthDays)));
 
-    this.barTitle = format(this.viewingDate, this.currentOptions.barTitleFormat, this.currentOptions.locale);
+    this.barTitle = format(
+      this.viewingDate,
+      this.currentOptions.barTitleFormat,
+      this.currentOptions.locale ? { locale: this.currentOptions.locale } : {}
+    );
   }
 
   private initYears(): void {
@@ -248,7 +250,11 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
     for (let i = start; i <= 6 + start; i++) {
       const date = setDay(new Date(), i);
 
-      this.dayNames.push(format(date, this.currentOptions.dayNamesFormat, this.currentOptions.locale));
+      this.dayNames.push(format(
+        date,
+        this.currentOptions.dayNamesFormat,
+        this.currentOptions.locale ? { locale: this.currentOptions.locale } : {}
+      ));
     }
   }
 
@@ -329,8 +335,10 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
     const maxDateSet = !isNil(this.currentOptions.maxDate);
     const timestamp = date.valueOf();
 
-    return (!(minDateSet && timestamp < this.currentOptions.minDate.valueOf()) ||
-      (!(maxDateSet && timestamp > this.currentOptions.maxDate.valueOf())));
+    const isBeforeMinDate = minDateSet ? timestamp < this.currentOptions.minDate.valueOf() : false;
+    const isAfterMaxDate = maxDateSet ? timestamp > this.currentOptions.maxDate.valueOf() : false;
+
+    return !(isBeforeMinDate || isAfterMaxDate);
   }
 
   private isDateSelected(date: Date): boolean {

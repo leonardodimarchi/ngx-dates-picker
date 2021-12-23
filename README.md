@@ -58,17 +58,14 @@ where `range.start` will be equal to `range.end` if one day is selected.
 ## <a name="options"></a>Options
 ```ts
 defaultOptions: DatepickerOptions = {
-  selectRange: false,
+  showNavigationIfMonthIsClicked: false,
+  selectRange: true,
   includeDays: 'previous-month', // 'none', 'previous-month', 'next-month', 'all'. Should it render days outside current month.
   minYear: 1970,
   maxYear: 2030,
-  displayFormat: 'MMM D[,] YYYY',
-  barTitleFormat: 'MMMM YYYY',
-  dayNamesFormat: 'ddd',
+  barTitleFormat: 'MMMM yyyy',
+  dayNamesFormat: 'EEEEE',
   firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
-  locale: {},
-  minDate: undefined, // Minimal selectable date
-  maxDate: undefined,  // Maximal selectable date
 };
 ```
 
@@ -78,7 +75,7 @@ In case you want to initialize with an empty value, just assign null to the mode
 
 ## Locale
 
-To change the locale import it from `date-fns`. For example `import * as frLocale from 'date-fns/locale/fr'` and pass it to options `options={locale: frLocale}`. 
+To change the locale import it from `date-fns`. For example `import { pt } from 'date-fns/locale'` and pass it to options `options={ locale: pt }`. 
 
 ## Run Included Demo
 
