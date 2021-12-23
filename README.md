@@ -71,8 +71,6 @@ defaultOptions: DatepickerOptions = {
 
 For available `format` options check out [here](https://date-fns.org/docs/format).
 
-In case you want to initialize with an empty value, just assign null to the model attribute you're storing the date and you can customize the message in the bar with the property `barTitleIfEmpty`.
-
 ## Locale
 
 To change the locale import it from `date-fns`. For example `import { pt } from 'date-fns/locale'` and pass it to options `options={ locale: pt }`. 
