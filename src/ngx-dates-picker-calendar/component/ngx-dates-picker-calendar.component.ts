@@ -32,7 +32,7 @@ import { DatepickerOptions, DateRange, Day, DayClass } from '../models';
 export { DatepickerOptions, DateRange };
 
 @Component({
-  selector: 'ngx-dates-picker',
+  selector: 'ngx-dates-picker-calendar',
   templateUrl: 'ngx-dates-picker-calendar.component.html',
   styleUrls: ['ngx-dates-picker-calendar.component.sass'],
   providers: [
