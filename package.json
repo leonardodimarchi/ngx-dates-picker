@@ -1,5 +1,5 @@
 {
-  "name": "ngx-dates-picker",
+  "name": "ngx-dates-picker-calendar",
   "version": "9.0.1",
   "main": "./dist/bundles/ngx-dates-picker.umd.js",
   "module": "./dist/ngx-dates-picker.es5.js",
@@ -14,10 +14,6 @@
     "noJQuery",
     "datepicker",
     "date-range-picker"
-  ],
-  "authors": [
-    "Martynas Treinys <martynas7928@gmail.com",
-    "Jan Kuri <jan@bleenco.com>"
   ],
   "license": "MIT",
   "bugs": {

@@ -1,117 +1,77 @@
+//#region Imports
+
+import { Component, ElementRef, forwardRef, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ElementRef,
-  HostListener,
-  forwardRef,
-  ViewChild,
-  TemplateRef
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import {
-  startOfMonth,
-  endOfMonth,
+  addDays,
   addMonths,
-  subMonths,
-  setYear,
   eachDayOfInterval,
+  endOfMonth,
+  format,
   getDate,
+  getDay,
   getMonth,
   getYear,
-  isToday,
+  isAfter,
+  isBefore,
   isSameMonth,
-  format,
-  getDay,
-  subDays,
+  isToday,
   setDay,
-  isAfter, isBefore, addDays, setMonth,
+  setMonth,
+  setYear,
+  startOfMonth,
+  subDays,
+  subMonths,
 } from 'date-fns';
 import { ISlimScrollOptions } from 'ngx-slimscroll';
-import { isSameDate, createDateRange } from '../helpers';
-import { DateRange, Day } from '../models';
+import { createDateRange, isNil, isSameDate } from '../helpers';
+import { DatepickerOptions, DateRange, Day, DayClass } from '../models';
 
-export type AddClass = string | string[] | { [k: string]: boolean } | null;
+//#endregion
 
-export interface DatepickerOptions {
-  closeOnClickOutside?: boolean;
-  closeOnSelection?: boolean;
-  includeDays?: 'none' | 'previous-month' | 'next-month' | 'all';
-  includeNextMonthsFirstFullWeek?: boolean;
-  minYear?: number; // default: current year - 30
-  maxYear?: number; // default: current year + 30
-  displayFormat?: string; // default: 'MMM D[,] YYYY'
-  barTitleFormat?: string; // default: 'MMMM YYYY'
-  dayNamesFormat?: string; // default 'ddd'
-  barTitleIfEmpty?: string;
-  selectRange?: boolean;
-  rangeSeparator?: string; // default '-'
-  firstCalendarDay?: number; // 0 = Sunday (default), 1 = Monday, ..
-  locale?: object;
-  minDate?: Date;
-  maxDate?: Date;
-  /** Placeholder for the input field */
-  placeholder?: string;
-  /** [ngClass] to add to the input field */
-  addClass?: AddClass;
-  /** [ngStyle] to add to the input field */
-  addStyle?: { [k: string]: any } | null;
-  /** ID to assign to the input field */
-  fieldId?: string;
-  /** If false, barTitleIfEmpty will be disregarded and a date will always be shown. Default: true */
-  useEmptyBarTitle?: boolean;
-}
-
-export type PickerPosition = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'static';
-
-// Counter for calculating the auto-incrementing field ID
-let counter = 0;
-
-/**
- * Internal library helper that helps to check if value is empty
- * @param value
- */
-const isNil = (value: Date | DatepickerOptions) => {
-  return (typeof value === 'undefined') || (value === null);
-};
+export { DatepickerOptions, DateRange };
 
 @Component({
   selector: 'ngx-dates-picker',
   templateUrl: 'ngx-dates-picker.component.html',
   styleUrls: ['ngx-dates-picker.component.sass'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgxDatesPickerComponent), multi: true }
-  ]
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgxDatesPickerComponent), multi: true },
+  ],
 })
 export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, OnChanges {
+
+  constructor() {
+    this.scrollOptions = {
+      barBackground: '#DFE3E9',
+      gridBackground: '#FFFFFF',
+      barBorderRadius: '3',
+      gridBorderRadius: '3',
+      barWidth: '6',
+      gridWidth: '6',
+      barMargin: '0',
+      gridMargin: '0',
+    };
+  }
+
+  //#region ViewChild and ViewChildren
+
   @ViewChild('container') calendarContainerElement: ElementRef;
   @ViewChild('inputElement') inputElement: ElementRef;
 
+  //#endregion
+
+  //#region Inputs
+
   @Input() options: DatepickerOptions;
-
-  /**
-   * Disable datepicker's input
-   */
-  @Input() headless = false;
-
-  /**
-   * Set datepicker's visibility state
-   */
-  @Input() isOpened = false;
-
-  /**
-   * Datepicker dropdown position
-   */
-  @Input() position: PickerPosition = 'bottom-right';
-
   @Input() previousMonthButtonTemplate: TemplateRef<any>;
   @Input() nextMonthButtonTemplate: TemplateRef<any>;
 
-  currentOptions: DatepickerOptions = {
-    closeOnClickOutside: true,
-    closeOnSelection: true,
+  //#endregion
+
+  //#region Properties
+
+  private currentOptions: DatepickerOptions = {
     includeDays: 'previous-month',
     includeNextMonthsFirstFullWeek: false,
     minYear: 1970,
@@ -119,38 +79,22 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     displayFormat: 'MMM dd, yyyy',
     barTitleFormat: 'MMMM yyyy',
     dayNamesFormat: 'EEE',
-    rangeSeparator: '-',
     selectRange: false,
     firstCalendarDay: 0,
-    barTitleIfEmpty: 'Click to select a date',
     locale: {},
-    placeholder: '',
-    addClass: {},
-    addStyle: {},
-    fieldId: this.defaultFieldId,
-    useEmptyBarTitle: true,
   };
 
-  displayValue: string;
-  viewingDate: Date;
-  barTitle: string;
-  view: 'days' | 'months' | 'years';
-  years: { year: number; isThisYear: boolean }[];
-  months: { month: number; name: string; isSelected: boolean }[];
-  dayNames: string[];
-  scrollOptions: ISlimScrollOptions;
-  days: Day[];
-  fieldId: string;
-  disabled: boolean;
+  public barTitle: string;
+  public view: 'days' | 'months' | 'years';
+  public years: { year: number; isThisYear: boolean }[];
+  public months: { month: number; name: string; isSelected: boolean }[];
+  public dayNames: string[];
+  public scrollOptions: ISlimScrollOptions;
+  public days: Day[];
 
+  private disabled: boolean;
+  private viewingDate: Date;
   private _range: DateRange;
-
-  private onTouchedCallback: () => void = () => { };
-  private onChangeCallback: (_: any) => void = () => { };
-
-  public setDisabledState(isDisabled: boolean) {
-    this.disabled = isDisabled;
-  }
 
   set range(val: DateRange | undefined) {
     this._range = val;
@@ -162,25 +106,22 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     return this._range;
   }
 
-  constructor() {
-    this.scrollOptions = {
-      barBackground: '#DFE3E9',
-      gridBackground: '#FFFFFF',
-      barBorderRadius: '3',
-      gridBorderRadius: '3',
-      barWidth: '6',
-      gridWidth: '6',
-      barMargin: '0',
-      gridMargin: '0'
-    };
+  public setDisabledState(isDisabled: boolean) {
+    this.disabled = isDisabled;
   }
 
-  ngOnInit() {
+  //#endregion
+
+  //#region Methods
+
+  public ngOnInit(): void {
     this.view = 'days';
+
     this.range = {
       start: new Date(),
       end: new Date(),
     };
+
     this.viewingDate = new Date();
 
     this.initDayNames();
@@ -188,52 +129,48 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     this.initMonths();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if ('options' in changes) {
-      this.updateOptions(changes.options.currentValue);
-      this.initDayNames();
-      this.init();
-      this.initYears();
-      this.initMonths();
+  public ngOnChanges(changes: SimpleChanges) {
+    if (!('options' in changes)) {
+      return;
     }
+
+    this.updateOptions(changes.options.currentValue);
+    this.initDayNames();
+    this.init();
+    this.initYears();
+    this.initMonths();
   }
 
-  get defaultFieldId(): string {
-    // Only evaluate and increment if required
-    const value = `datepicker-${counter++}`;
-    Object.defineProperty(this, 'defaultFieldId', {value});
-
-    return value;
-  }
-
-  updateOptions(options: DatepickerOptions): void {
+  private updateOptions(options: DatepickerOptions): void {
     this.currentOptions = {
       ...this.currentOptions,
       ...options,
     };
   }
 
-  nextMonth(): void {
+  public nextMonth(): void {
     this.viewingDate = addMonths(this.viewingDate, 1);
     this.init();
   }
 
-  prevMonth(): void {
+  public prevMonth(): void {
     this.viewingDate = subMonths(this.viewingDate, 1);
     this.init();
   }
 
-  setDate(i: number): void {
+  public setDate(i: number): void {
     const date = this.days[i].date;
 
     if (this.currentOptions.selectRange) {
       if (!this.range.start && !this.range.end) {
         this.range.start = date;
-      } else if (this.range.start && !this.range.end && isAfter(date, this.range.start)) {
-        this.range.end = date;
       } else {
-        this.range.end = undefined;
-        this.range.start = date;
+        if (this.range.start && !this.range.end && isAfter(date, this.range.start)) {
+          this.range.end = date;
+        } else {
+          this.range.end = undefined;
+          this.range.start = date;
+        }
       }
     } else {
       this.range.start = this.range.end = date;
@@ -241,27 +178,23 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
 
     this.init();
     this.onChangeCallback(this.getValueToEmit(this.range));
-
-    if (this.currentOptions.closeOnSelection && this.range.end) {
-      this.close();
-    }
   }
 
-  setYear(i: number): void {
+  public setYear(i: number): void {
     this.viewingDate = setYear(this.viewingDate, this.years[i].year);
     this.init();
     this.initYears();
     this.view = 'months';
   }
 
-  setMonth(i: number): void {
+  public setMonth(i: number): void {
     this.viewingDate = setMonth(this.viewingDate, this.months[i].month);
     this.init();
     this.initMonths();
     this.view = 'days';
   }
 
-  init(): void {
+  private init(): void {
     if (!this.viewingDate) {
       return;
     }
@@ -289,19 +222,10 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     new Array(nextDays).fill(undefined)
       .forEach((_, i) => this.days.push(this.formatDay(addDays(end, i + 1), showNextMonthDays)));
 
-
-    this.displayValue = this.formatDisplay();
-
-    if (this.range) {
-      this.barTitle = format(this.viewingDate, this.currentOptions.barTitleFormat, this.currentOptions.locale);
-    } else {
-      this.barTitle = this.currentOptions.useEmptyBarTitle ?
-        this.currentOptions.barTitleIfEmpty :
-        format(this.viewingDate, this.currentOptions.barTitleFormat, this.currentOptions.locale);
-    }
+    this.barTitle = format(this.viewingDate, this.currentOptions.barTitleFormat, this.currentOptions.locale);
   }
 
-  initYears(): void {
+  private initYears(): void {
     const range = this.currentOptions.maxYear - this.currentOptions.minYear;
 
     this.years = Array.from(new Array(range), (x, i) => i + this.currentOptions.minYear).map((year) => {
@@ -309,14 +233,14 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     });
   }
 
-  initMonths(): void {
+  private initMonths(): void {
     this.months = Array.from(new Array(12), (x, i) => setMonth(new Date(), i + 1))
       .map((date) => {
         return { month: date.getMonth(), name: format(date, 'MMM'), isSelected: date.getMonth() === getMonth(this.viewingDate) };
       });
   }
 
-  initDayNames(): void {
+  private initDayNames(): void {
     this.dayNames = [];
     const start = this.currentOptions.firstCalendarDay;
 
@@ -327,27 +251,11 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     }
   }
 
-  toggleView(): void {
+  public toggleView(): void {
     this.view = this.view === 'days' ? 'years' : 'days';
   }
 
-  toggle(): void {
-    this.isOpened = !this.isOpened;
-
-    if (!this.isOpened && this.view === 'years') {
-      this.toggleView();
-    }
-  }
-
-  close(): void {
-    this.isOpened = false;
-
-    if (this.view === 'years') {
-      this.toggleView();
-    }
-  }
-
-  reset(): void {
+  private reset(): void {
     this.range = {
       start: new Date(),
       end: new Date(),
@@ -355,16 +263,20 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     this.init();
   }
 
-  writeValue(val: DateRange | Date | string | undefined) {
+  public writeValue(val: DateRange | Date | string | undefined) {
     if (val) {
       if (typeof val === 'string') {
         this.range.start = this.range.end = new Date(val);
-      } else if (val instanceof Date) {
-        this.range.start = this.range.end = val;
-      } else if (val.start) { // Checking if it's instance of DateRange
-        this.range = val;
       } else {
-        throw Error('Invalid input data type');
+        if (val instanceof Date) {
+          this.range.start = this.range.end = val;
+        } else {
+          if (val.start) { // Checking if it's instance of DateRange
+            this.range = val;
+          } else {
+            throw Error('Invalid input data type');
+          }
+        }
       }
 
       this.viewingDate = this.range.start || this.viewingDate;
@@ -373,39 +285,13 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     }
   }
 
-  registerOnChange(fn: any) {
+  public registerOnChange(fn: any) {
     this.onChangeCallback = fn;
   }
 
-  registerOnTouched(fn: any) {
+  public registerOnTouched(fn: any) {
     this.onTouchedCallback = fn;
   }
-
-  @HostListener('document:click', ['$event']) onBlur(e: MouseEvent) {
-    if (!this.isOpened || !this.currentOptions.closeOnClickOutside) {
-      return;
-    }
-
-    if (this.inputElement == null) {
-      return;
-    }
-
-    if (e.target === this.inputElement.nativeElement ||
-      this.inputElement.nativeElement.contains(<any>e.target) ||
-      ((<any>e.target).parentElement && (<any>e.target).parentElement.classList.contains('day-unit'))
-    ) {
-      return;
-    }
-
-    if (this.calendarContainerElement.nativeElement !== e.target &&
-      !this.calendarContainerElement.nativeElement.contains(<any>e.target) &&
-      !(<any>e.target).classList.contains('year-unit') &&
-      !(<any>e.target).classList.contains('month-unit')
-    ) {
-      this.close();
-    }
-  }
-
 
   formatDay = (date: Date, isVisible: boolean = true): Day => (
     {
@@ -424,7 +310,7 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     }
   )
 
-  getDayClasses(day: Day): AddClass {
+  public getDayClasses(day: Day): DayClass {
     return {
       'is-prev-month': !day.inThisMonth,
       'is-today': day.isToday,
@@ -458,26 +344,6 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     return this.isDateSelected(date) || (isAfter(date, this.range.start) && isBefore(date, this.range.end));
   }
 
-  private formatDisplay(): string {
-    if (!this.range) {
-      return '';
-    }
-
-    const formattedStartDate = format(this.range.start, this.currentOptions.displayFormat, this.currentOptions.locale);
-
-    if (this.currentOptions.selectRange) {
-      const formattedEndDate = format(
-        this.range.end || this.range.start,
-        this.currentOptions.displayFormat,
-        this.currentOptions.locale
-      );
-
-      return `${formattedStartDate}${this.currentOptions.rangeSeparator}${formattedEndDate}`;
-    }
-
-    return formattedStartDate;
-  }
-
   private isRangeBoundary(date: Date, boundary: 'start' | 'end'): boolean {
     return !this.range[boundary] || isSameDate(date, this.range[boundary]);
   }
@@ -493,4 +359,7 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
 
     return createDateRange(range.start, range.start);
   }
+
+  private onTouchedCallback: () => void = () => { };
+  private onChangeCallback: (_: any) => void = () => { };
 }

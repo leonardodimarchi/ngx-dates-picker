@@ -1,13 +1,9 @@
-<div class="container">
-  <div class="columns is-multiline">
-    <div class="column is-6 is-offset-3">
-      <div class="datepicker-container">
-        <ngx-dates-picker
-          [isOpened]="true"
-          [headless]="true"
-          [(ngModel)]="date"
-          [options]="options"></ngx-dates-picker>
-      </div>
-    </div>
-  </div>
-</div>
+<main>
+  <h3>{{ showingDate }}</h3>
+
+  <ngx-dates-picker
+    [(ngModel)]="date"
+    (ngModelChange)="formatDisplay()"
+    [options]="options">
+  </ngx-dates-picker>
+</main>
