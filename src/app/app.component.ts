@@ -17,6 +17,7 @@ export class AppComponent {
   public date: Date | DateRange = new Date();
 
   public options: DatepickerOptions = {
+    showNavigationIfMonthIsClicked: false,
     selectRange: true,
     includeDays: 'previous-month', // 'none', 'previous-month', 'next-month', 'all'. Should it render days outside current month.
     minYear: 1970,

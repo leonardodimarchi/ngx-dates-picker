@@ -1,6 +1,6 @@
 <div class="ngx-dates-picker-container">
   <ng-content></ng-content>
-  <div class="ngx-dates-picker-calendar-container ngx-dates-picker-position-static" #container>
+  <div class="ngx-dates-picker-calendar-container" #container>
     <div class="topbar-container">
       <div (click)="prevMonth()">
         <ng-template [ngTemplateOutlet]="previousMonthButtonTemplate || defaultPreviousMonthTemplate"></ng-template>

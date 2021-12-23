@@ -1,6 +1,6 @@
 # ngx-dates-picker
 
-Angular 2+ datepicker component with no JQuery dependency, forked from [bleenco/ng2-datepicker](https://github.com/bleenco/ng2-datepicker).
+Angular 2+ datepicker component with no JQuery dependency, forked from [martre3/ngx-dates-picker](https://github.com/martre3/ngx-dates-picker).
 
 [![AbstruseCI](https://ci.bleenco.io/badge/6)](https://ci.bleenco.io/repo/6)
 
@@ -19,7 +19,7 @@ Angular 2+ datepicker component with no JQuery dependency, forked from [bleenco/
 1. Install package from `npm`.
 
 ```sh
-npm install ngx-dates-picker --save
+npm install ngx-dates-picker-calendar --save
 ```
 
 2. Include NgxDatesPickerModule into your application.
@@ -47,15 +47,12 @@ export class AppModule {}
 
 ## NgModel
 Accepted types are date `string`, javascript `Date` object and `DateRange` object (`{start: Date, end: Date}`).
-If `selectRange` is `true` javascript `Date` object will be returned for selected date, else - `DateRange` object, 
+If `selectRange` is `false`, a javascript `Date` object will be returned for selected date, else - `DateRange` object, 
 where `range.start` will be equal to `range.end` if one day is selected. 
 
 ## Attributes
 |Name|Type|Default|Description|
 | --- | --- | --- | --- |
-|`headless`|boolean|`false`|Disable datepicker's input|
-|`isOpened`|boolean|`false`|Show or hide datepicker|
-|`position`|string|`bottom-right`|Dropdown position (`bottom-left`, `bottom-right`, `top-left`, `top-right`, `static`)|
 |`previousMonthButtonTemplate`|`TemplateRef`|`undefined`|Overrides left arrow used to go one month back.|
 |`nextMonthButtonTemplate`|`TemplateRef`|`undefined`|Overrides right arrow used to go to next month.| 
 |`options`|object|see [options](#options)||
@@ -63,26 +60,17 @@ where `range.start` will be equal to `range.end` if one day is selected.
 ## <a name="options"></a>Options
 ```ts
 defaultOptions: DatepickerOptions = {
-  closeOnClickOutside: true;
-  closeOnSelection: true;
   selectRange: false,
-  includeDays: 'previous-month'; // 'none', 'previous-month', 'next-month', 'all'. Should it render days outside current month.
+  includeDays: 'previous-month', // 'none', 'previous-month', 'next-month', 'all'. Should it render days outside current month.
   minYear: 1970,
   maxYear: 2030,
   displayFormat: 'MMM D[,] YYYY',
   barTitleFormat: 'MMMM YYYY',
   dayNamesFormat: 'ddd',
-  rangeSeparator: '-' // Char that separates start and end dates in input field.
   firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
   locale: {},
   minDate: undefined, // Minimal selectable date
   maxDate: undefined,  // Maximal selectable date
-  barTitleIfEmpty: '',
-  placeholder: '', // HTML input placeholder attribute (default: '')
-  addClass: {}, // Optional, value to pass on to [ngClass] on the input field
-  addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
-  fieldId: 'datepicker-0', // ID to assign to the input field. Defaults to datepicker-<counter>
-  useEmptyBarTitle: true, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
 };
 ```
 
@@ -94,17 +82,12 @@ In case you want to initialize with an empty value, just assign null to the mode
 
 To change the locale import it from `date-fns`. For example `import * as frLocale from 'date-fns/locale/fr'` and pass it to options `options={locale: frLocale}`. 
 
-## To Do
-1. Fix packages vulnerabilities.
-2. Write tests (not a single test has been written yet).
-3. Add ability to add custom class to each calendar component.
-
 ## Run Included Demo
 
 1. Clone this repository
 
 ```sh
-git clone https://github.com/martre3/ngx-dates-picker.git
+git clone https://github.com/leonardodimarchi/ngx-dates-picker-calendar.git
 cd ngx-dates-picker
 ```
 

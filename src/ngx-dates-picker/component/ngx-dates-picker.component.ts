@@ -79,6 +79,7 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
     displayFormat: 'MMM dd, yyyy',
     barTitleFormat: 'MMMM yyyy',
     dayNamesFormat: 'EEE',
+    showNavigationIfMonthIsClicked: false,
     selectRange: false,
     firstCalendarDay: 0,
     locale: {},
@@ -252,15 +253,11 @@ export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, On
   }
 
   public toggleView(): void {
-    this.view = this.view === 'days' ? 'years' : 'days';
-  }
+    if (!this.currentOptions.showNavigationIfMonthIsClicked) {
+      return;
+    }
 
-  private reset(): void {
-    this.range = {
-      start: new Date(),
-      end: new Date(),
-    };
-    this.init();
+    this.view = this.view === 'days' ? 'years' : 'days';
   }
 
   public writeValue(val: DateRange | Date | string | undefined) {
