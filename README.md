@@ -2,8 +2,6 @@
 
 Angular 2+ calendar datepicker component (With range select), forked from [martre3/ngx-dates-picker](https://github.com/martre3/ngx-dates-picker).
 
-[![AbstruseCI](https://ci.bleenco.io/badge/6)](https://ci.bleenco.io/repo/6)
-
 <p align="center">
   <img style="display: inline-block" src="https://user-images.githubusercontent.com/32035250/64512878-033faf00-d2f0-11e9-9fcb-5cbef6112cde.png" width="300">
   <img style="display: inline-block" src="https://user-images.githubusercontent.com/32035250/64523368-d4800380-d304-11e9-8ddf-528216634d98.png" width="300">

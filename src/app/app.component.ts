@@ -1,7 +1,7 @@
 //#region Imports
 
 import { Component } from '@angular/core';
-import { DatepickerOptions, DateRange } from '../ngx-dates-picker/component/ngx-dates-picker-calendar.component';
+import { DatepickerOptions, DateRange } from '../ngx-dates-picker-calendar/component/ngx-dates-picker-calendar.component';
 
 //#endregion
 
