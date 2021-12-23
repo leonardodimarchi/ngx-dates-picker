@@ -33,13 +33,13 @@ export { DatepickerOptions, DateRange };
 
 @Component({
   selector: 'ngx-dates-picker',
-  templateUrl: 'ngx-dates-picker.component.html',
-  styleUrls: ['ngx-dates-picker.component.sass'],
+  templateUrl: 'ngx-dates-picker-calendar.component.html',
+  styleUrls: ['ngx-dates-picker-calendar.component.sass'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgxDatesPickerComponent), multi: true },
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgxDatesPickerCalendarComponent), multi: true },
   ],
 })
-export class NgxDatesPickerComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, OnInit, OnChanges {
 
   constructor() {
     this.scrollOptions = {

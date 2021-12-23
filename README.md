@@ -1,6 +1,6 @@
 # ngx-dates-picker
 
-Angular 2+ datepicker component with no JQuery dependency, forked from [martre3/ngx-dates-picker](https://github.com/martre3/ngx-dates-picker).
+Angular 2+ calendar datepicker component (With range select), forked from [martre3/ngx-dates-picker](https://github.com/martre3/ngx-dates-picker).
 
 [![AbstruseCI](https://ci.bleenco.io/badge/6)](https://ci.bleenco.io/repo/6)
 
