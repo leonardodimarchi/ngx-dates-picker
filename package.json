@@ -50,7 +50,7 @@
     "@angular/platform-browser-dynamic": "12.2.15",
     "@angular/router": "12.2.15",
     "date-fns": "^2.28.0",
-    "ngx-slimscroll": "^9.0.0"
+    "ngx-slimscroll": "^12.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.8",
