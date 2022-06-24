@@ -1,4 +1,4 @@
-# ngx-dates-picker
+# ngx-dates-picker-calendar
 
 Angular 2+ calendar datepicker component (With range select), forked from [martre3/ngx-dates-picker](https://github.com/martre3/ngx-dates-picker).
 
@@ -20,12 +20,17 @@ Angular 2+ calendar datepicker component (With range select), forked from [martr
 npm install ngx-dates-picker-calendar --save
 ```
 
+| Angular| ngx-dates-picker-calendar |
+| ------|:------:|
+| >=13.0.0 <14.0.0 | v2.x |
+| >=12.0.0 <13.0.0 | v1.x |
+
 2. Include NgxDatesPickerModule into your application.
 
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgxDatesPickerModule } from 'ngx-dates-picker';
+import { NgxDatesPickerModule } from 'ngx-dates-picker-calendar';
 
 @NgModule({
   imports: [
