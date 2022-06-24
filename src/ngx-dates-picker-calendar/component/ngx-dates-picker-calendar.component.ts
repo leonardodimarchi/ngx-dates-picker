@@ -23,7 +23,7 @@ import {
   subDays,
   subMonths,
 } from 'date-fns';
-import { ISlimScrollOptions } from 'ngx-slimscroll';
+import { SlimScrollOptions } from 'ngx-slimscroll';
 import { createDateRange, isNil, isSameDate } from '../helpers';
 import { DatepickerOptions, DateRange, Day, DayClass } from '../models';
 
@@ -42,7 +42,7 @@ export { DatepickerOptions, DateRange };
 export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, OnInit, OnChanges {
 
   constructor() {
-    this.scrollOptions = {
+    this.scrollOptions = new SlimScrollOptions({
       barBackground: '#DFE3E9',
       gridBackground: '#FFFFFF',
       barBorderRadius: '3',
@@ -51,7 +51,7 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
       gridWidth: '6',
       barMargin: '0',
       gridMargin: '0',
-    };
+    });
   }
 
   //#region ViewChild and ViewChildren
@@ -88,7 +88,7 @@ export class NgxDatesPickerCalendarComponent implements ControlValueAccessor, On
   public years: { year: number; isThisYear: boolean }[];
   public months: { month: number; name: string; isSelected: boolean }[];
   public dayNames: string[];
-  public scrollOptions: ISlimScrollOptions;
+  public scrollOptions: SlimScrollOptions;
   public days: Day[];
 
   private disabled: boolean;
