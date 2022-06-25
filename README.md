@@ -25,17 +25,17 @@ npm install ngx-dates-picker-calendar --save
 | >=13.0.0 <14.0.0 | v2.x |
 | >=12.0.0 <13.0.0 | v1.x |
 
-2. Include NgxDatesPickerModule into your application.
+2. Include NgxDatesPickerCalendarModule into your application.
 
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgxDatesPickerModule } from 'ngx-dates-picker-calendar';
+import { NgxDatesPickerCalendarModule } from 'ngx-dates-picker-calendar';
 
 @NgModule({
   imports: [
     BrowserModule,
-    NgxDatesPickerModule
+    NgxDatesPickerCalendarModule
   ],
   declarations: [ AppComponent ],
   exports: [ AppComponent ]
@@ -45,7 +45,7 @@ export class AppModule {}
 
 ## Example
 ```html
-  <ngx-dates-picker [(ngModel)]="date" />
+  <ngx-dates-picker-calendar [(ngModel)]="date"></ngx-dates-picker-calendar>
 ```
 
 ## NgModel
@@ -86,7 +86,7 @@ To change the locale import it from `date-fns`. For example `import { pt } from 
 
 ```sh
 git clone https://github.com/leonardodimarchi/ngx-dates-picker-calendar.git
-cd ngx-dates-picker
+cd ngx-dates-picker-calendar
 ```
 
 2. Install packages
