@@ -1,13 +1,13 @@
 {
   "name": "ngx-dates-picker-calendar",
   "version": "2.0.1",
-  "main": "./dist/bundles/ngx-dates-picker.umd.js",
-  "module": "./dist/ngx-dates-picker.es5.js",
-  "es2015": "./dist/ngx-dates-picker.js",
-  "typings": "./dist/ngx-dates-picker.d.ts",
+  "main": "./dist/bundles/ngx-dates-picker-calendar.umd.js",
+  "module": "./dist/ngx-dates-picker-calendar.es5.js",
+  "es2015": "./dist/ngx-dates-picker-calendar.js",
+  "typings": "./dist/ngx-dates-picker-calendar.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leonardodimarchi/ngx-dates-picker.git"
+    "url": "git+https://github.com/leonardodimarchi/ngx-dates-picker-calendar.git"
   },
   "keywords": [
     "angular",
@@ -17,9 +17,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leonardodimarchi/ngx-dates-picker/issues"
+    "url": "https://github.com/leonardodimarchi/ngx-dates-picker-calendar/issues"
   },
-  "homepage": "https://github.com/leonardodimarchi/ngx-dates-picker#readme",
+  "homepage": "https://github.com/leonardodimarchi/ngx-dates-picker-calendar#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
